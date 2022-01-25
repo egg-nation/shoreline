@@ -63,6 +63,9 @@ For additional tests I have also added the printBinary() function which receives
 
 A system of nodes, each node with a particular numeric ID assigned from the [0, 1023] interval is, by definition, a distributed system, where each node is a machine entity with an assigned machine ID and internal operations. 
 
+- [Generator](https://github.com/egg-nation/shoreline/blob/main/minimal_uuid_generator/uuids_generation/uuids_generation/main.cpp)
+- [Generated UUIDS for given node ID](https://github.com/egg-nation/shoreline/tree/main/minimal_uuid_generator/uuids_generation/uuids_generation/tests_on_minimal_UUID_generator)
+
 ## Multithreaded TCP server with queue to select available nodes 
 
 One minimal representation of a distributed system is a TCP(*)  server to which multiple clients can connect at the same time and the way to do that is by using multithreading, each client socket connection being handled on a particular thread. Multithreading allows simultaneous requests from multiple clients which also increases the overall speed. 
@@ -86,6 +89,10 @@ This architecture allows another problem to be handled: making sure that a nodeI
 While in the minimal implementation the node ID was manually given to the generator, in this case the node ID is taken from a queue with free IDs.
 
 At first, the globally declared queue (in the server class) is populated with all the possible values of the node ID (all the integers from the [0,1023] interval). When a client connects to the server and a thread is created for handling it, a free node ID is assigned to the thread process by getting the node ID at the front and poping it from the global free load queue. When the client connection ends voluntarily or involuntarily (software defect or a send() or recv() function returning an error) the node ID used by the client connection in question is pushed back to the free load queue as it is no longer in use.
+
+- [Server](https://github.com/egg-nation/shoreline/tree/main/server_clients_system/server_multiple_clients/server_multiple_clients)
+- [Regular Client](https://github.com/egg-nation/shoreline/blob/main/server_clients_system/regular_client/regular_client/regular_client.cpp)
+- [Automated Client - 100k requests](https://github.com/egg-nation/shoreline/blob/main/server_clients_system/automated_client_100000_iterations/automated_client_100000_iterations/automated_client.cpp)
 
 ## Possible improvements
 
