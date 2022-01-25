@@ -68,4 +68,32 @@ A system of nodes, each node with a particular numeric ID assigned from the [0, 
 One minimal representation of a distributed system is a TCP(*)  server to which multiple clients can connect at the same time and the way to do that is by using multithreading, each client socket connection being handled on a particular thread. Multithreading allows simultaneous requests from multiple clients which also increases the overall speed. 
 
 *Using an UDP might be faster, but packets of data might be lost and it can also send the same data pacet multiple times and that would create problems for the globally unique IDs. TCP is safer to use in this particular case.
+
+![Fig.1](https://github.com/egg-nation/shoreline/blob/main/client_threads.jpg)
+
+The server is started first by executing the server_multiple_clients process. The ip address and the port are bound to the server socket and the server socket is now ready to listen to the possible client connection. In the server program, the queue of available nodes is globally initialized.
+
+A client connects to the server on the server socket port and the server creates a new thread to handle the client (Fig.1), after which it assigns a currently available node ID to the newly created thread. The client can request as many ids as it wants until he chooses to close the connection or an error intervenes, time when the assigned ID is added back to the queue of available IDs and the thread is ended. 
+
+At the same time, multiple other clients can connect to the server and for each of them the handling process is similar (Fig.2).
+
 ![Fig.2](https://www.researchgate.net/profile/Jingyu-Zhou-3/publication/221244103/figure/fig2/AS:669067807563778@1536529604229/Multi-threaded-server-design.png)
+
+This way, we have the required system represented as a server as the main network to which the machines (clients) connect at the same time and each of them is handled differently.
+
+This architecture allows another problem to be handled: making sure that a nodeID isn’t used more than once among several clients which are requesting UUIDs at the same time.
+
+While in the minimal implementation the node ID was manually given to the generator, in this case the node ID is taken from a queue with free IDs.
+
+At first, the globally declared queue (in the server class) is populated with all the possible values of the node ID (all the integers from the [0,1023] interval). When a client connects to the server and a thread is created for handling it, a free node ID is assigned to the thread process by getting the node ID at the front and poping it from the global free load queue. When the client connection ends voluntarily or involuntarily (software defect or a send() or recv() function returning an error) the node ID used by the client connection in question is pushed back to the free load queue as it is no longer in use.
+
+## Possible improvements
+
+The multithreaded TCP server-client connection is a minimal solution that, unfortunately, does not stand as an optimal architecture:
+If multiple clients connect at the same time then the increasing number of threads will eventually cause the program to slow down its response time and even crash if the memory is excedeed (each thread takes at approximately 1MB so 1024 threads - one for each possible node, for this implementation with a client with an assigned thread - would take at least 1024MB). 
+
+A better solution would be to create a fixed number of threads (one for each CPU core, for example 4 threads for 4 cores - my computer) per instance and to have a bigger number of instances to make sure that a server is not overworked (if instance machines  would be similar to my 4 core configuration, there would be a total of instances 256 similar needed, each with 4 cores running 4 threads, each thread on a machine having a globally unique machine ID throughout the system of servers, thus corresponding to the nodeID.
+
+This way, we would have 1024 nodes always ready for the client to connect. In order to achieve it, I have set up an AWS account and started working with virtual machine instances, but there still is a long way to go in that direction for me, as I am new to cloud services.
+
+Another possible improvement throughout the system is to use a load balancer (for example, round robin or least connections or least response time) to distribute client requests in an optimal manner across the system of servers. A load balancer ensures that the requests get to a server that can respond fastly. AWS provides ELB, Elastic Load Balancing, which helps do just that and, given the fact that 750h of its use are free each month, the next and current step is to research the topic more and to try to orchestrate the system of nodes using AWS as I am getting familiar with some of its “basic”-est basics).
