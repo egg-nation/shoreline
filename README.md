@@ -16,7 +16,7 @@ Tuesday, January 25, 2022 11:52:23 AM converts to 1643111543943374 microseconds;
 1643111543943374 microseconds have a lenght of 51 bits (which leaves us with 13 free bits out of the 64 bits given)
 
 The next step to ensure the uniqueness of the future UUID is attaching the node from which it was generated, as, in the previously described system, multiple nodes can generate an UUID at the same time and that would lead to multiple duplicates. In the system, each node has one particular ID and one internal process to generate one ID at a time, meaning that attaching the node ID to the converted timestamp quarantees an optimal unique result.
-For reasons such as speed and memory optimization, I have taken the bitset approach by shifting the binary representation of the timestamp to the left by 10 bits (1024 is 210 and the nodes can have an ID from the [0, 1023] interval, 1023 being 210-1, so 10 bits is enough space for all the possible node IDs to be added at the end of the timestamp). After the shifting operation, I have added the nodeId, thus getting the required UUID.
+For reasons such as speed and memory optimization, I have taken the bitset approach by shifting the binary representation of the timestamp to the left by 10 bits (1024 is 2<sup>10</sup> and the nodes can have an ID from the [0, 1023] interval, 1023 being 2 <sup>10</sup>-1, so 10 bits is enough space for all the possible node IDs to be added at the end of the timestamp). After the shifting operation, I have added the nodeId, thus getting the required UUID.
 
 *Example*
 - Converting 1643111543943374 microseconds into a 64 bit representation 0000000000000101110101100110011010110111111001110011000011001110
