@@ -8,7 +8,7 @@ As speed is mandatory when it comes to continuous generation of UUIDs, I chose t
 
 Generally the format of an UUID consists of a timestamp and the address of the computer on which it was generated (a node from the system).
 
-Thus, the first step to create the custom UUID was computing a reliable numeric timestamp, which I got by converting the time since epoch (January 1st, 1970 at 00:00:00 UTC Unix epoch, which is a date given arbitrarily as an uniform unitary date for the start of time) to microseconds (0.000001 or 10−6 of a second) to ensure accuracy and a numeric value which doesn’t overflow the 64 bits long data type.
+Thus, the first step to create the custom UUID was computing a reliable numeric timestamp, which I got by converting the time since epoch (January 1st, 1970 at 00:00:00 UTC Unix epoch, which is a date given arbitrarily as an uniform unitary date for the start of time) to microseconds (0.000001 or 10<sup>−6</sup> of a second) to ensure accuracy and a numeric value which doesn’t overflow the 64 bits long data type.
 
 *Example*
 - Time since epoch in microseconds
