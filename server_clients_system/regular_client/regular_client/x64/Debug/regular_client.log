@@ -1,0 +1,3 @@
+﻿  regular_client.cpp
+E:\c++\regular_client\regular_client\regular_client.cpp(70,74): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  regular_client.vcxproj -> E:\c++\regular_client\x64\Debug\regular_client.exe

@@ -1,0 +1,3 @@
+﻿  automated_client.cpp
+E:\c++\automated_client_100000_iterations\automated_client_100000_iterations\automated_client.cpp(73,74): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  automated_client_100000_iterations.vcxproj -> E:\c++\automated_client_100000_iterations\x64\Debug\automated_client_100000_iterations.exe
