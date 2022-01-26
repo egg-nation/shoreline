@@ -97,7 +97,7 @@ At first, the globally declared queue (in the server class) is populated with al
 ## Possible improvements
 
 The multithreaded TCP server-client connection is a minimal solution that, unfortunately, does not stand as an optimal architecture:
-If multiple clients connect at the same time then the increasing number of threads will eventually cause the program to slow down its response time and even crash if the memory is excedeed (each thread takes at approximately 1MB so 1024 threads - one for each possible node, for this implementation with a client with an assigned thread - would take at least 1024MB). 
+If multiple clients connect at the same time then the increasing number of threads will eventually cause the program to slow down its response time and even crash if the memory is excedeed (each thread takes approximately 1MB so 1024 threads - one for each possible node, for this implementation with a client with an assigned thread - would take at least 1024MB). 
 
 A better solution would be to create a fixed number of threads (one for each CPU core, for example 4 threads for 4 cores - my computer) per instance and to have a bigger number of instances to make sure that a server is not overworked (if instance machines  would be similar to my 4 core configuration, there would be a total of instances 256 similar needed, each with 4 cores running 4 threads, each thread on a machine having a globally unique machine ID throughout the system of servers, thus corresponding to the nodeID.
 
